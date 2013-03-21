@@ -47,7 +47,6 @@ def main():
 			if status_server.status == "ERROR" or status_server.status == "UNKNOWN":	
 				print "Server build failure, current state: %s" % status_server.status
 		network = status_server.networks
-		os.system("clear")
 		print '\n\n'
 		print '-'*15
 		print "BUILD COMPLETE"
