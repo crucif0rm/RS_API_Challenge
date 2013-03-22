@@ -47,10 +47,11 @@ def main():
 			if status_server.status == "ERROR" or status_server.status == "UNKNOWN":	
 				print "Server build failure, current state: %s" % status_server.status
 		network = status_server.networks
-		if any(":" in s for s in network['public'][0]):
-			ip4 = network['public'][1]
-		else: 
-			ip4 = network['public'][0]
+#		if any(":" in s for s in network['public'][0]):
+#			ip4 = network['public'][1]
+#		else: 
+#			ip4 = network['public'][0]
+		ip4 = network['public'][0] if ":" in network["public"][1] else network["public"][1]
 
 		print '\n\n'
 		print '-'*15
