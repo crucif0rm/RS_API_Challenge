@@ -47,17 +47,18 @@ def main():
 			if status_server.status == "ERROR" or status_server.status == "UNKNOWN":	
 				print "Server build failure, current state: %s" % status_server.status
 		network = status_server.networks
-		if len(network['public'][0]) < len(network['public'][1]):
-			ip4 = network['public'][0]
-		else:
+		if any(":" in s for s in network['public'][0]):
 			ip4 = network['public'][1]
+		else: 
+			ip4 = network['public'][0]
+
 		print '\n\n'
 		print '-'*15
 		print "BUILD COMPLETE"
 		print '-'*15
 		print "Server Name:", status_server.name
 		print "Public IP:", ip4
-		print "Admin Password: ", built_server['admin_pass']
+		print "Root Password: ", built_server['admin_pass']
 		print '-'*15
 
 if __name__ == '__main__':
