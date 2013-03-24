@@ -15,11 +15,8 @@ def main():
 	except exceptions.AuthenticationFailed:
 		print '\n\n'
 		print "Auth failed, possibly wrong info in .rackspace_cloud_credentials"
-	
 	if pyrax.identity.authenticated:
-		print '-'*15
-		print "Auth successful as %s" % pyrax.identity.username
-		print '-'*15
+		print '-'*15, '\n', "Auth successful as %s" % pyrax.identity.username, '\n', '-'*15
 	else:
 		print "Authentication failed."
 		sys.exit(1)
@@ -27,33 +24,29 @@ def main():
 
 	cs = pyrax.cloudservers
 	server = cs.servers.get("9e6796cd-983d-4101-9cc2-6a464804fbb5")
+	
 	imgn = server.name + strftime("_%m%d-%H%M", gmtime())
 	server.create_image(imgn)
+	print '\n', "Image creation started.. please wait.", '\n'
 	server_name = server.name + "-clone"
-	print '\n'
-	print "Image creation starting.. please wait."
-	print '\n'
+	
+	flavor = server.flavor['id']
 	image = [img for img in cs.images.list()
 		if imgn in img.name][0]
-	flavor = server.flavor['id']
+
 	pyrax.utils.wait_until(image, "status", ['ACTIVE','ERROR'], interval=60, attempts=40, verbose=True)
+	
 	new_server = cs.servers.create(server_name, image.id, flavor)
-	newi = cs.servers.get(new_server.id)	
-	network = newi.networks
+	status_server = cs.servers.get(new_server.id)
+	network = status_server.networks
+	
 	ip4 = network["public"][0] if ":" in network["public"][1] else network["public"][1]
-	print '-'*15
-	print "Image creation successful"
-	print '\n'
-	print '-'*15
-	print "Image:", new_server.name
-	print "Image ID:", new_server.id
-	print '-'*15
-	print "Build from image starting.. please wait."	
-	pyrax.utils.wait_until(newi, "status", ['ACTIVE','ERROR'], interval=30, attempts=40, verbose=False)
-	print "Root Pass:", new_server.adminPass
-	print "IP:", ip4
-	print '\n'
-	print '-'*15
+
+	print '-'*15, "Image creation successful", '\n', '-'*15, '\n', "Image:", new_server.name, '\n', "ID:", new_server.id, '\n', '-'*15, "Build from image started.. please wait.", '\n'
+	
+	pyrax.utils.wait_until(new_server, "status", ['ACTIVE','ERROR'], interval=30, attempts=40, verbose=False)
+	
+	print '-'*15, '\n', "Root Pass:", new_server.adminPass, '\n', "Public IP:", ip4, '\n', '-'*15
 
 
 
