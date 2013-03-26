@@ -29,7 +29,9 @@ def main():
         parser.add_argument('--name', '-n', required=True, help='user name?')
         args = parser.parse_args()
 
-        def passgen(size=12, chars=string.ascii_uppercase + string.digits + string.lowercase):
+#        def passgen(size=12, chars=string.ascii_uppercase + string.digits + string.lowercase):
+#            return ''.join(random.choice(chars) for x in range(size))
+        def passgen(size=12, chars=string.hexdigits):
             return ''.join(random.choice(chars) for x in range(size))
 
         cdbn = args.database
