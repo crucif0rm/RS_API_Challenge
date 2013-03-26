@@ -50,7 +50,7 @@ def main():
 
         recnfo = {"type": "A", "name": domain, "data": ip_addr, "ttl": 3000}
         recs = dom.add_records([recnfo])
-        print "Successfully added %s with A record pointed to %s" % (domain, ip_addr)
+        print "\nSuccessfully added %s with A record pointed to %s\n" % (domain, ip_addr)
 
 if __name__ == '__main__':
     main()
