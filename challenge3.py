@@ -23,8 +23,8 @@ def main():
 		sys.exit(1)
 
 	parser = argparse.ArgumentParser(description='cloud files container upload')
-	parser.add_argument('--folder', '-f', required=True, help='-f Folder name?')
-	parser.add_argument('--name', '-n', required=True, help='-n Local file name to upload?')
+	parser.add_argument('--folder', '-f', required=True, help='Folder name?')
+	parser.add_argument('--name', '-n', required=True, help='File to upload?')
 	args = parser.parse_args()
 
 	cf = pyrax.cloudfiles
@@ -35,18 +35,16 @@ def main():
 		cont = cf.get_container(container)
 		print '-'*15, "\nContainer %s exists, attempting upload.." % cont.name, '\n', '-'*15
 		time.sleep(2)
-	except exc.NoSuchContainer:	
+	except exc.NoSuchContainer:
 		cont = cf.create_container(container)
 		print "Container %s created, attempting upload.." % cont.name
-
 	try:
 		with open(filename): pass
-	except IOError:
+        except IOError:
 		print "This file %s does not exist on your local system." % cont.name
-
-	print '-'*15, "\nUploading %s from your local system.." % filename, '\n', '-'*15
-	time.sleep(2)
-	try:
+        try:
+		print '-'*15, "\nUploading %s from your local system.." % filename, '\n', '-'*15
+		time.sleep(2)
 		object = cf.upload_file(cont.name, filename)
 		print '-'*15, '\n'
 		print "Upload completed."
@@ -57,4 +55,4 @@ def main():
 		print "Upload Failed."
 
 if __name__ == '__main__':
-	main() 
+	main()
