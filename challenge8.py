@@ -6,7 +6,6 @@ import time
 import pyrax
 import pyrax.exceptions as exc
 from time import sleep
-import argparse
 
 def main():
 
